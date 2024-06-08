@@ -13,7 +13,7 @@ func _ready() -> void:
 	_dc_menu.port_changed.connect(func(port: int)->void:Network.port = port)
 	_dc_menu.player_name_changed.connect(func(player_name: String)->void:Network.player_name = player_name)
 
-	# SUMMARY: If a player hosts or joins a network, when the connection menu
+	# SUMMARY: If a player hosts/joins a network, hide the connection menu
 	_dc_menu.host_selected.connect(func()->void: if Network.host_server() == OK: _dc_menu.hide())
 	_dc_menu.join_selected.connect(func()->void: if Network.join_server() == OK: _dc_menu.hide())
 	

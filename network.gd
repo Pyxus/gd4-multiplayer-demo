@@ -44,8 +44,8 @@ func join_server() -> int:
 	return err
 
 # NOTE:
-# This is a personal convention related to my server scope concept (Explained below).
-# I personally just making it painfully obvious when I'm accessing
+# This is a convention related to my server scope concept (Explained below).
+# I personally just like making it painfully obvious when I'm accessing
 # something that should only exist in server space.
 func with_server(callback: Callable) -> void:
 	if _server:

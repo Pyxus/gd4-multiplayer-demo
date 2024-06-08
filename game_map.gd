@@ -11,23 +11,25 @@ func _ready() -> void:
     # TUTORIAL:
     # The purpose of the MultiplayerSpawner is to replicate scenes between clients.
     # There are 2 ways of 'registering' a scene to be replicated.
-    # In bothe cases the reigstered scene will automatically be ADDED or REMOVED
-    # When they are added or removed from the server.
+    # In both cases the reigstered scene will automatically be ADDED or REMOVED
+    # When they are added or removed from the AUTHORITY (server by default).
+    #
     # Method 1 (Auto Spawn):
     #   Add scene to "Auto Spawn List" in the inspector.
     #   Then when the scene is added with "add_child" like normal It will be replicated.
     #   Important!: 
     #       Use add_child(inst, true). Godot's High level multiplayer DEPENDS on node paths
-    #       being the same across clients. Passing true for the second argument gurantees consistent naming.
+    #       being the same across clients. Passing true for the second argument forces 
+    #       a human readnable name.
     #
     #   Note: 
-    #       The scene will only contain default values.
-    #       Any property set on the server won't automatically be synched.
-    #       You'll need to sync them either with RPCs, a MultiplayerSynchronizer, or
-    #       Custom spawns aka Method 2.
+    #       The replicated scene will only contain default values.
+    #       Any property set on the server WILL NOT automatically be synched.
+    #       You'll need to sync them either with RPCs, a MultiplayerSynchronizer, 
+    #       or on spawn with a custom spawn aka Method 2.
     #
     # Method 2 (Custom Spawn):
-    #   This is the method i'm doing below. A custom spawner will allow you to send config
+    #   This is the method I'm doing below. A custom spawner will allow you to send config
     #   data to replicated scenes on spawn.
     #   All you need to do is assign a callable of type `func(Variant) -> Node`
     #   to `spawner.spawn_function`.
@@ -58,7 +60,7 @@ func _on_Network_connected() -> void:
 # WARNING:
 # This is supposed to be a simple demonstrate but there is a huge downside
 # to giving a client authority to tell the server what to sync.
-# In principle a player could modify their client and lie to the player.
+# In principle a player could modify their client and lie to the server.
 # Is this were a racing game, for example, the player could tell the server
 # there position is at the finish line.
 # If security is a concern the server should control the synchronizer.
@@ -66,7 +68,12 @@ func _on_Network_connected() -> void:
 # and informs the player, not the other way around.
 # This can have down-sides if there is latency, then you may need to look into things such as
 # client-side prediction. However the bottom-line is the server should be the only source of truth,
-# and never trust the client. 
+# and never trust the client.
+#
+# Related, when sending info to a client consider asking "could the client use this to cheat".
+# for example in my card game only the server knows the state of the deck.
+# The server only shares the cards in a client's hand, and only to the client who owns that information.
+# On the flip-side all clients know what's in the discard pile since that is public knowledge. 
 func _spawn_player(config: Dictionary) -> Player:
     var player := Player.new_scene()
     player.set_multiplayer_authority(config.player_id)
@@ -81,14 +88,19 @@ class ServerScope:
         Network.notified_player_joined.connect(_on_Network_player_joined)
     
     func _on_Network_player_joined(player_id: int) -> void:
+        # NOTE:
+        # You can see my 'with_server' in action here.
+        # If you like the ServerScope concept but aren't a fan of this.
+        # You could opt to reference server variable directly:
+        # Network.server.assign_player_obj(...)
         Network.with_server(
             func(it: Network.ServerScope)->void:
                 # TUTORIAL:
-                # to invoke the spawn function set earlier you just have to call
-                # the spawner's spawn function.
+                # To invoke the spawn_function set earlier you just have to call
+                # the spawner's `spawn` function.
                 # Do note spawn will automatically add the node to the scene.
-                # It should not be done manually.
-                # You can also the config data is set here.
+                # It should not be done manually. You can also the config data is set here.
+                # Reminder we only need to spawn on the server since the spawner.
                 var player: Player = _client._player_spawner.spawn({
                     player_id=player_id, 
                     player_name=it.get_player_name(player_id)
