@@ -1,0 +1,9 @@
+res://game_map.gd
+res://main.gd
+res://network.gd
+res://main.tscn
+res://direct_connect_menu.tscn
+res://game_map.tscn
+res://player.tscn
+res://player.gd
+res://direct_connect_menu.gd

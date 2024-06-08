@@ -1,0 +1,12 @@
+Label
+MultiplayerSpawner
+MultiplayerSynchronizer
+CollisionShape2D
+CharacterBody2D
+Node2D
+StaticBody2D
+ColorRect
+MarginContainer
+LineEdit
+VBoxContainer
+PanelContainer

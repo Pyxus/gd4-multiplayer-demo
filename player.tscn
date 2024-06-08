@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtm2t1qr2wng8"]
+
+[ext_resource type="Texture2D" uid="uid://redoysvpbxsq" path="res://icon.svg" id="1_523yp"]
+[ext_resource type="Script" path="res://player.gd" id="1_cl4rf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txo0b"]
+size = Vector2(128, 132)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cua7f"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_cl4rf")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+texture = ExtResource("1_523yp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_txo0b")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_cua7f")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -87.0
+offset_top = -105.0
+offset_right = 87.0
+offset_bottom = -82.0
+horizontal_alignment = 1

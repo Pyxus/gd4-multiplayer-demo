@@ -1,0 +1,12 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1717816132
+direct_connect_menu.gd::GDScript::-1::1717741884::0::1::::DirectConnectMenu<>PanelContainer<>::
+direct_connect_menu.tscn::PackedScene::7852517090904790510::1717771813::0::1::::<><>::res://direct_connect_menu.gd
+game_map.gd::GDScript::-1::1717771800::0::1::::GameMap<>Node2D<>::
+game_map.tscn::PackedScene::4888668615484320543::1717771814::0::1::::<><>::res://game_map.gd
+icon.svg::CompressedTexture2D::1201676294296895976::1717738193::1717738202::1::::<><>::
+main.gd::GDScript::-1::1717771676::0::1::::<>Node<>::
+main.tscn::PackedScene::8580537790327683246::1717771813::0::1::::<><>::uid://dj422rpt7hfhu::::res://direct_connect_menu.tscn<>res://main.gd
+network.gd::GDScript::-1::1717771676::0::1::::<>Node<>::
+player.gd::GDScript::-1::1717747113::0::1::::Player<>CharacterBody2D<>::
+player.tscn::PackedScene::8519297293272860961::1717771814::0::1::::<><>::uid://redoysvpbxsq::::res://icon.svg<>res://player.gd

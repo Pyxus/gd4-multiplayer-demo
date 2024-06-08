@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://duiqg6tfd6p8i"]
+
+[ext_resource type="PackedScene" uid="uid://dj422rpt7hfhu" path="res://direct_connect_menu.tscn" id="1_ecpmd"]
+[ext_resource type="Script" path="res://main.gd" id="1_y2rp1"]
+[ext_resource type="PackedScene" uid="uid://cbwdwmqjpnoot" path="res://game_map.tscn" id="3_j13dp"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_y2rp1")
+
+[node name="DirectConnectMenu" parent="." instance=ExtResource("1_ecpmd")]
+
+[node name="GameMap" parent="." instance=ExtResource("3_j13dp")]
