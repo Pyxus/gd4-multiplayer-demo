@@ -18,9 +18,9 @@ func host_server() -> int:
 		_server = ServerScope.new(self)
 
 		# TUTORIAL:
-		# All nodes in the tree where the same 'multiplayer' reference
+		# All nodes in the tree have the same 'multiplayer' reference
 		# Assigning a 'multiplayer_peer' to it essentially enables
-		# networking for the whole stree
+		# networking for the entire tree.
 		multiplayer.multiplayer_peer = peer
 
 		# NOTE: 
