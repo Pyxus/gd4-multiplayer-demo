@@ -5,7 +5,7 @@ extends Node
 func _ready() -> void:
 	# NOTE:
 	# This UI setup is just a personal preference.
-	# I don't think UI should contain non-ui related state, or directl changes external state.
+	# I don't think UI should contain non-ui related state, or directly change external state.
 	# But you could just code this directly into your menu if you'd like.
 
 	# SUMMARY: Update address/port/player_name when the UI values change
