@@ -100,7 +100,11 @@ class ServerScope:
                 # the spawner's `spawn` function.
                 # Do note spawn will automatically add the node to the scene.
                 # It should not be done manually. You can also the config data is set here.
-                # Reminder we only need to spawn on the server since the spawner.
+                # Reminder we only need to spawn on the server since the spawner
+                # it self handles replicating to clients.
+                
+                # WARNING: `spawn` is networked. Arguments must be primivite Godot types.
+                # This includes String, int, float, Array of primitives, Dictionary of primitives, etc. 
                 var player: Player = _client._player_spawner.spawn({
                     player_id=player_id, 
                     player_name=it.get_player_name(player_id)
