@@ -24,7 +24,7 @@ func host_server() -> int:
 		multiplayer.multiplayer_peer = peer
 
 		# NOTE: 
-		# This is Server space. The _server can never connect to it self so I manually call this.
+		# This is Server space. The server can never connect to it self so I manually call this.
 		_on_Multiplayer_connected_to_server()
 	
 	return err
@@ -38,7 +38,7 @@ func join_server() -> int:
 
 		# NOTE: 
 		# This is Client space. We must wait for the client to fully connect before we
-		# try communicating with the _server.
+		# try communicating with the server.
 		multiplayer.connected_to_server.connect(_on_Multiplayer_connected_to_server, CONNECT_ONE_SHOT)
 	
 	return err
@@ -55,8 +55,8 @@ func _on_Multiplayer_connected_to_server() -> void:
 	connected.emit()
 
 	# TUTORIAL:
-	# This is how RPC functions are invoked. 1 is ALWAYS the id of the _server.
-	# This can be read as "call 'request_join_lobby' on the _server"
+	# This is how RPC functions are invoked. 1 is ALWAYS the id of the server.
+	# This can be read as "call 'request_join_lobby' on the server"
 	request_join_lobby.rpc_id(1, player_name)
 
 # TUTORIAL:
@@ -67,7 +67,7 @@ func _on_Multiplayer_connected_to_server() -> void:
 # RPCs have 3 main configurations, they essentially determine:
 #
 # Who can Remotely call this? 
-#   - authority (who ever has authority; typically the _server but not always)
+#   - authority (who ever has authority; typically the server but not always)
 #   - any_peer (anyone)
 # If called remotely can this run locally?
 #   - call_remote (no)
@@ -78,31 +78,36 @@ func _on_Multiplayer_connected_to_server() -> void:
 #   - reliable (This is mission critical, I really need this and it has to be in order.)
 
 # NOTE:
-# This is a personal convention where 'request' means it is called by the client and executed on the _server.
-# Likewise 'notify' means it is called by the _server and executed on the client
+# This is a personal convention where 'request' means it is called by the client and executed on the server.
+# Likewise 'notify' means it is called by the server and executed on the client
 
 # BREAKDOWN: In this example I use... 
 # - 'any_peer' because I want to allow any client call this remotely.
-# - 'call_local' because the _server is technically a client so I want it to be able to rpc it self.
+# - 'call_local' because the server is technically a client so I want it to be able to rpc it self.
 # - 'reliable' because, in general, if something is not updating rapidly (like movement) you want to use reliable.
 @rpc("any_peer", "call_local", "reliable")
 func request_join_lobby(p_name: String) -> void:
 	if _server:
 		_server.request_join_lobby(p_name)
 
-# BREAKDOWN: I use 'authority' because I only want the _server calling this remotely
-# I don't actually use this in this demo but wanted to demonstrate.
+# BREAKDOWN: I use 'authority' because I only want the server calling this remotely
+# I don't actually use the emitted signal in this demo but wanted to demonstrate
+# the notify concept.
 @rpc("authority", "call_local", "reliable")
 func notify_player_joined(peer_id: int) -> void:
 	notified_player_joined.emit(peer_id)
 
 # NOTE:
-# This is setup purely a personal convention!
-# I like to seperate the client from _server as much as possible
-# Everything in ServerScope exists ONLY on the _server.
+# This setup is purely a personal convention!
+# I like to seperate the client from server as much as possible
+# Everything in ServerScope exists ONLY on the server.
 # Everything outside exists on both Client and Server.
-# I only use scopes when I need to maintain server state.
-# Otherwise I just use `if multiplayer.is_server()` blocks.
+# I generally only use scopes when I need to maintain a seperate server state.
+# Otherwise I just use `if multiplayer.isserver():` blocks.
+#
+# A `with_server(callback: func(self.ServerScope)->void)` is implemented when I need to access
+# this scope from the server-side of external objects.
+# An example of such an implementation is included in this script.
 class ServerScope:
 	const Network_T = preload("res://network.gd")
 
