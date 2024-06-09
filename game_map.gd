@@ -70,6 +70,9 @@ func _on_Network_connected() -> void:
 # client-side prediction. However the bottom-line is the server should be the only source of truth,
 # and never trust the client.
 #
+# However, in a setup where a player is the host the host could still get away with cheating.
+# Though i'd argue this a non-issue outside of competitive games.
+#
 # Related, when sending info to a client consider asking "could the client use this to cheat".
 # for example in my card game only the server knows the state of the deck.
 # The server only shares the cards in a client's hand, and only to the client who owns that information.
